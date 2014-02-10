@@ -1,0 +1,31 @@
+name : "sample config for bremen.de"
+threshold : 50
+feedurl : "http://schwarzesbrett.bremen.de/sixcms/detail.php?template=01_rss_feed_d&contentId=28555"
+database : "database.pickle"
+
+keywords :
+    -
+        operator : "or"
+        words : ["uni", "schwachhausen", "horn", "viertel", "wg", "bremen", "zentral", "3zkb", "2zkb"]
+        score : 25
+
+    -
+        operator : "and"
+        words : ["balkon", "haustier"]
+        score : 100
+
+    -
+        operator : "not"
+        words : ["zwischenmiete", "möbliert", "findorff", "walle", "vegesack", "bremen-nord"]
+        score : 150
+
+phrases :
+    -
+        operator : "or"
+        phrase : ["wg geeignet"]
+        score : 200
+    -
+        operator : "not"
+        phrase : ["keine wg", "nicht wg"]
+        score : 1000
+
