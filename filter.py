@@ -32,7 +32,6 @@ class Filter(object):
 
         self.feedcontent = None
         self.database = PickleDataBase(self.config['database'])
-        print self.database.info()
         self.datadetector = BremenDeFullText(target=self.database)
 
         # fetch feed and rank unranked entries
@@ -42,6 +41,13 @@ class Filter(object):
     def update(self):
         if self.feedcontent is not None:
             self.store()
+        # if we have a new database put the config entry in
+        if not 'config' in self.database.keys():
+            self.database['config'] = hashlib.md5(str(self.config)).hexdigest()
+        # if the config file has changed rerank all entries in database
+        if hashlib.md5(str(self.config)).hexdigest() != self.database['config']:
+            self.rank_all()
+
         if os.path.exists("debug_feedcontent.pickle"):
             # setting for development, so that we don't need to poll bremen.de's site all the time
             print(">> loading feed from local file..")
@@ -124,6 +130,8 @@ class Filter(object):
             return b[1]-a[1]
 
         for key in self.database.keys():
+            if key == 'config':
+                continue
             sortarray.append((key, self.database[key]['score']))
 
         sortarray.sort(cmp=score_sort)
