@@ -70,6 +70,8 @@ class Filter(object):
         """function to re-calculte the score value for every
         known entry in our database"""
         for key in self.database.keys():
+            if key == 'config':
+                continue
             self.rank_single(key, rerank=True)
 
 
